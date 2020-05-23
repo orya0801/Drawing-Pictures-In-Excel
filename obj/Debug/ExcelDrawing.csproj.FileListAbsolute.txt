@@ -1,0 +1,6 @@
+D:\DrawingPisturesInExcel\ExcelDrawing\bin\Debug\ExcelDrawing.exe.config
+D:\DrawingPisturesInExcel\ExcelDrawing\bin\Debug\ExcelDrawing.exe
+D:\DrawingPisturesInExcel\ExcelDrawing\bin\Debug\ExcelDrawing.pdb
+D:\DrawingPisturesInExcel\ExcelDrawing\obj\Debug\ExcelDrawing.csprojAssemblyReference.cache
+D:\DrawingPisturesInExcel\ExcelDrawing\obj\Debug\ExcelDrawing.exe
+D:\DrawingPisturesInExcel\ExcelDrawing\obj\Debug\ExcelDrawing.pdb
