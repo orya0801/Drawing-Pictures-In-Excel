@@ -38,11 +38,19 @@ namespace ExcelDrawing
             //bData = Picture1.LockBits(new Rectangle(0, 0, Img.Width, Img.Height), ImageLockMode.ReadWrite, Img.PixelFormat);
         }
 
-        public Color GetColor(int x, int y)
+        public Color[,] GetColors()
         {
-            Color color = Picture1.GetPixel(x, y);
+            Color[,] colors = new Color[Height, Width];
 
-            return color;
+            for (int y = 0; y < Height; y++)
+            {
+                for(int x = 0; x < Width; x++)
+                {
+                    colors[y, x] = Picture1.GetPixel(x, y);
+                }
+            }
+
+            return colors;
         }
     }
 }

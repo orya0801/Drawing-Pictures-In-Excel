@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,15 +13,32 @@ namespace ExcelDrawing
     {
         static void Main(string[] args)
         {
-            var pathToExcel = System.IO.Path.GetFullPath(@"test1.xlsx");
-            Excel excel = new Excel(pathToExcel, 1);
-            Console.WriteLine("Введите путь до картинки:");
-            string pathToImage = Console.ReadLine();
-            excel.DrawPicture(pathToImage);
-            excel.Save();
-            excel.Close();
-            excel.QuitExcel();
+            try
+            {
+                var pathToExcel = Path.GetFullPath(@"test1.xlsx");
+                Excel excel = new Excel(pathToExcel, 1);
 
+                try
+                {
+                    Console.WriteLine("Введите путь до картинки:");
+                    string pathToImage = Console.ReadLine();
+                    excel.DrawPicture(pathToImage);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+                finally
+                {
+                    excel.Save();
+                    excel.Close();
+                    excel.QuitExcel();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

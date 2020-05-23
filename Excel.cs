@@ -16,7 +16,12 @@ namespace ExcelDrawing
         Workbook xlWorkBook;
         Worksheet xlWorkSheet;
         _Excel.Range xlRange;
+
+
         Picture pict;
+        Color[,] colors;
+        bool[,] usedCells;
+
 
         public string Path { get; set; } = "";
         public int Sheet { get; set; }
@@ -152,15 +157,27 @@ namespace ExcelDrawing
         public void DrawPicture(string path)
         {
             pict = new Picture(path);
+            colors = pict.GetColors();
+            //usedCells = new bool[colors.GetLength(0), colors.GetLength(1)];
             SetupExcelList(pict.Height, pict.Width);
             try
             {
-                //Parallel.For(1, xlRange.Columns.Count, DrawingProcess);
-                DrawingProcess();
+                Parallel.For(1, xlRange.Rows.Count + 1, y =>
+                {
+                    for (int x = 1; x <= xlRange.Columns.Count; x++)
+                    {
+                        var cell = xlRange.Cells[y, x];
+                        cell.Interior.Color = colors[y - 1, x - 1];
+                        //cell.Borders.Color = colors[y - 1, x - 1];  
+                    }
+                    Console.WriteLine($"Ряд {y} нарисован...");
+                });
+                Thread.Sleep(3000);
+                // DrawingProcess(xlRange.Rows.Count);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException.Message);
                 Save();
                 Close();
                 QuitExcel();
@@ -168,19 +185,20 @@ namespace ExcelDrawing
             }    
         }
 
-        private void DrawingProcess()
+        private void DrawingProcess(int rows)
         {
-            for (int y = 1; y <= xlRange.Rows.Count; y++)
+            for (int y = 1; y <= rows; y++)
             {
                 for (int x = 1; x <= xlRange.Columns.Count; x++)
                 {
-                    var cell = xlRange.Cells[y, x];
-                    cell.Interior.Color = pict.GetColor(x - 1, y - 1);
-                    cell.Borders.Color = pict.GetColor(x - 1, y - 1);
+                        var cell = xlRange.Cells[y, x];
+                        cell.Interior.Color = colors[y - 1, x - 1];
+                        cell.Borders.Color = colors[y - 1, x - 1];
+                        //usedCells[y - 1, x - 1] = true;  
                 }
                 Console.WriteLine($"Ряд {y} нарисован...");
             }
-            //Thread.Sleep(3000);
+            //Thread.Sleep(1000);
         }
 
         public void CreateNewFile()
